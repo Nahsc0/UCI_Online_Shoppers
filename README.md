@@ -1,3 +1,7 @@
+![Work Flow](https://github.com/Nahsc0/UCI_Online_Shoppers/assets/106038656/7afeb042-771f-49a6-98cd-92abdeab0b0e)
+
+
+
 # UCI Online Shoppers Analysis
 
 This repository contains the code and data for an Exploratory Data Analysis (EDA) and Predictive Analysis on the UCI Online Shoppers dataset.

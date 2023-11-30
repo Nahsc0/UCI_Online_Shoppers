@@ -143,4 +143,35 @@ par(mar= c(1,1,1,1)) #adjust margins
 rpart.plot(decision_tree_model, main='Decision Tree Model Base on Revenue', box.palette = 'BuBn')
 
 
+# Install the package if it's not already installed
+if (!require(caret)) {
+  install.packages("caret")
+}
+
+# Load the package
+library(caret)
+
+
+# Split the data
+set.seed(123) # for reproducibility
+trainIndex <- createDataPartition(df$Revenue, p = .8, list = FALSE)
+train <- df[trainIndex, ]
+test <- df[-trainIndex, ]
+
+
+# Fit a linear regression model
+model <- lm(Revenue ~ ProductRelated + ProductRelated_Duration, data = train)
+
+# Check the summary of the model
+summary(model)
+
+
+# Make predictions
+predictions <- predict(model, newdata = test)
+
+# Check the predictions
+head(predictions)
+
+plot(model)
+
 

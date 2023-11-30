@@ -3,6 +3,10 @@ library(ggplot2)
 df <- read.csv('Online_sales.csv')
 head(df)
 
+stats <- table(summary(df))
+
+
+plot(stats)
 #Checking for Null values
 sum(is.na(df))
 
@@ -93,37 +97,27 @@ ggplot(df, aes(x = Month, y = Revenue, fill = Revenue)) +
   theme_minimal() +
   labs(x = "Month", y = "Revenue", title = "Monthly Revenue")
 
-# Plot 3: Traffic Type Visits
-ggplot(df, aes(x = as.character(TrafficType), fill = Revenue)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(x = "Traffic Type", y = "Visits", title = "Traffic Type Visits")
 
-# Plot 4: Visitor Types
+# Plot 3: Visitor Types
 ggplot(df, aes(x = VisitorType, fill = Revenue)) +
   geom_bar() +
   theme_minimal() +
   labs(x = "Visitor Type", y = "Visits", title = "Visitor Types")
 
-# Plot 5: Browser Preferences
-ggplot(df, aes(x =  as.character(Browser), fill = Revenue)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(x = "Browser", y = "Visits", title = "Browser Preferences")
 
-# Plot 6: OS Preferences
+# Plot 5: OS Preferences
 ggplot(df, aes(x = as.character (OperatingSystems), fill = Revenue)) +
   geom_bar() +
   theme_minimal() +
   labs(x = "Operating System", y = "Visits", title = "OS Preferences")
 
-# Plot 7: Regional Visits
+# Plot 6: Regional Visits
 ggplot(df, aes(x = as.character(Region), fill = Revenue)) +
   geom_bar() +
   theme_minimal() +
   labs(x = "Region", y = "Visits", title = "Regional Visits")
 
-# Plot 8: Special Day Visits
+# Plot : Special Day Visits
 ggplot(df, aes(x = as.character(SpecialDay), fill = Revenue)) +
   geom_bar() +
   theme_minimal() +
@@ -176,12 +170,14 @@ trainIndex <- createDataPartition(df$Revenue, p = .8, list = FALSE)
 train <- df[trainIndex, ]
 test <- df[-trainIndex, ]
 
+head(test)
 
 # Fit a linear regression model
 model <- lm(Revenue ~ ProductRelated + ProductRelated_Duration, data = train)
 
 # Check the summary of the model
 summary(model)
+
 
 
 # Make predictions
@@ -192,4 +188,24 @@ head(predictions)
 
 plot(model)
 
+head(df)
 
+
+grid.arrange(
+  ggplot(df, aes(x = Revenue, y = BounceRates, fill = Revenue)) +
+    geom_boxplot() +
+    ggtitle("Impact of Bounce Rates on Revenue"),
+  
+  ggplot(df, aes(x = Revenue, y = PageValues, fill = Revenue)) +
+    geom_boxplot() +
+    ggtitle("Imppact of PageValues on Revenue"),
+  
+  ncol=2
+)
+
+
+ggplot(df, aes(x = Revenue, fill = Revenue)) +
+    geom_bar() +
+    ggtitle("Revenue Chart")
+  
+ 

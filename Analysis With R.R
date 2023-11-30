@@ -82,26 +82,26 @@ cat("   Returning Visitor Frequency:", returning_frequency, "\n")
 # Add some plots
 
 # Plot 1: Monthly Visits
-ggplot(df, aes(x = Month)) +
-  geom_bar(fill = "blue") +
+ggplot(df, aes(x = Month, fill = Revenue)) +
+  geom_bar() +
   theme_minimal() +
   labs(x = "Month", y = "Visits", title = "Monthly Visits")
 
 # Plot 2: Monthly Revenue
-ggplot(df, aes(x = Month, y = Revenue)) +
-  geom_bar(stat = "summary", fun = sum, fill = "green") +
+ggplot(df, aes(x = Month, y = Revenue, fill = Revenue)) +
+  geom_bar(stat = "summary", fun = sum) +
   theme_minimal() +
   labs(x = "Month", y = "Revenue", title = "Monthly Revenue")
 
 # Plot 3: Traffic Type Visits
-ggplot(df, aes(x = TrafficType)) +
-  geom_bar(fill = "green") +
+ggplot(df, aes(x = as.character(TrafficType), fill = Revenue)) +
+  geom_bar() +
   theme_minimal() +
   labs(x = "Traffic Type", y = "Visits", title = "Traffic Type Visits")
 
 # Plot 4: Visitor Types
-ggplot(df, aes(x = VisitorType)) +
-  geom_bar(fill = "purple") +
+ggplot(df, aes(x = VisitorType, fill = Revenue)) +
+  geom_bar() +
   theme_minimal() +
   labs(x = "Visitor Type", y = "Visits", title = "Visitor Types")
 
@@ -124,8 +124,8 @@ ggplot(df, aes(x = as.character(Region), fill = Revenue)) +
   labs(x = "Region", y = "Visits", title = "Regional Visits")
 
 # Plot 8: Special Day Visits
-ggplot(df, aes(x = SpecialDay)) +
-  geom_bar(fill = "yellow") +
+ggplot(df, aes(x = as.character(SpecialDay), fill = Revenue)) +
+  geom_bar() +
   theme_minimal() +
   labs(x = "Special Day", y = "Visits", title = "Special Day Visits")
 
@@ -141,6 +141,24 @@ decision_tree_model <- rpart(Revenue~., data= df, method = 'class')
 
 par(mar= c(1,1,1,1)) #adjust margins
 rpart.plot(decision_tree_model, main='Decision Tree Model Base on Revenue', box.palette = 'BuBn')
+
+library(gridExtra)
+
+
+# Create a grid of multiple plots for different aspects
+grid.arrange(
+  ggplot(df, aes(x = Revenue, y = Informational, fill = Revenue)) +
+    geom_boxplot() +
+    ggtitle("Informational Pages Visited by Revenue"),
+  
+  ggplot(df, aes(x = Revenue, y = ProductRelated, fill = Revenue)) +
+    geom_boxplot() +
+    ggtitle("Product Related Pages Visited by Reveue"),
+  
+  
+  ncol = 2
+)
+
 
 
 # Install the package if it's not already installed

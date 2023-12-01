@@ -181,14 +181,43 @@ summary(model)
 
 
 # Make predictions
-predictions <- predict(model, newdata = test)
+predictions <- predict(model, data = test)
 
 # Check the predictions
 head(predictions)
 
 plot(model)
 
-head(df)
+# Predict the values for the test set
+predictions <- predict(model, newdata = test)
+
+# Calculate the Mean Squared Error
+mse <- mean((test$Revenue - predictions)^2)
+
+# Calculate the Root Mean Squared Error
+rmse <- sqrt(mse)
+
+# Calculate the R-squared
+r_squared <- summary(model)$r.squared
+
+print(paste("Mean Squared Error: ", mse))
+print(paste("Root Mean Squared Error: ", rmse))
+print(paste("R-squared: ", r_squared))
+
+# Fit the logistic regression model
+model2 <- glm(Revenue ~ ProductRelated + ProductRelated_Duration, data = train, family = "binomial")
+
+# Generate predictions for the test set
+predictions <- predict(model2, newdata = test, type = "response")
+
+
+# Classify the predictions
+predicted_classes <- ifelse(predictions >= 0.5, 1, 0)
+
+# Calculate the accuracy score
+accuracy <- sum(predicted_classes == test$Revenue) / nrow(test)
+
+print(paste("Accuracy: ", accuracy))
 
 
 grid.arrange(
